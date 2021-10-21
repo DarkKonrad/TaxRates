@@ -27,7 +27,7 @@ namespace TaxRates.Data.Models
 		/// <summary>
 		/// Tax Rate Id (foregin key).
 		/// </summary>
-		[ForeignKey("Rate")]
+		[ForeignKey("TaxRate")]
 		public int RateId { get; set; }
 		#endregion
 

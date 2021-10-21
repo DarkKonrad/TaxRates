@@ -26,24 +26,23 @@ namespace TaxRates.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    RateId = table.Column<int>(nullable: false),
-                    TaxRateId = table.Column<int>(nullable: true)
+                    RateId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TaxCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TaxCategories_TaxRates_TaxRateId",
-                        column: x => x.TaxRateId,
+                        name: "FK_TaxCategories_TaxRates_RateId",
+                        column: x => x.RateId,
                         principalTable: "TaxRates",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TaxCategories_TaxRateId",
+                name: "IX_TaxCategories_RateId",
                 table: "TaxCategories",
-                column: "TaxRateId");
+                column: "RateId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
