@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaxRates.Data;
-
+using System.Text.Json;
 namespace TaxRates
 {
 	public class Startup
@@ -28,7 +28,12 @@ namespace TaxRates
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers()
-				.AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
+				.AddJsonOptions(options =>
+				{
+					options.JsonSerializerOptions.WriteIndented = true;
+					options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+				});
+
 
 			services.AddEntityFrameworkSqlServer();
 

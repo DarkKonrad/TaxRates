@@ -13,7 +13,8 @@ namespace TaxRates.Controllers.Extensions
 {
 	public static class SeedControllerExtensions
 	{
-
+        // helper variable initialised in LoadTaxRatesFromXlsx
+        // used later to retreive tax rates in LoadTaxCategoriesFromXlsx
         private static List<TaxRate> lstTaxRates;
 
 
@@ -21,33 +22,30 @@ namespace TaxRates.Controllers.Extensions
 		{
             lstTaxRates = dbContext.TaxRates.ToList();
             uint TaxRatesCount = 0;
-            var ws = excelPackage.Workbook.Worksheets[(int)worksheetIndex];
+            var workSheet = excelPackage.Workbook.Worksheets[(int)worksheetIndex];
 
             // iterates through all rows, skipping the first one
             for (int currentRowCount = 2;
-                currentRowCount <= ws.Dimension.End.Row;
+                currentRowCount <= workSheet.Dimension.End.Row;
                 currentRowCount++)
             {
-                var row = ws.Cells[currentRowCount, 1, currentRowCount, ws.Dimension.End.Column];
+                var row = workSheet.Cells[currentRowCount, 1, currentRowCount, workSheet.Dimension.End.Column];
                 var rateVal = row[currentRowCount, 2].GetValue<string>();
 
-                // does this TaxRate already exist in the database?
+                //this TaxRate already exist in the database?
                 if (lstTaxRates.Where(c => c.Rate == rateVal).Count() != 0)
                     continue;
 
-                // create the TaxRate entity and fill it with xlsx data
                 var rate = new TaxRate
                 {
                     Rate = rateVal
                 };
 
-                // add the new TaxRate to the DB context
                 dbContext.TaxRates.Add(rate);
 
                 // store the TaxRate to retrieve its Id later on
                 lstTaxRates.Add(rate);
 
-                // increment the counter
                 TaxRatesCount++;
             }
 
@@ -60,18 +58,16 @@ namespace TaxRates.Controllers.Extensions
 
         private static async Task<uint> LoadTaxCategoriesFromXlsx(ApplicationDbContext dbContext, ExcelPackage excelPackage, uint worksheetIndex = 0)
 		{
-            // create a list containing all the cities already existing
-            // into the Database (it will be empty on first run).
             var taxCategoryList = dbContext.TaxCategories.ToList();
             uint TaxCategoryCount = 0;
+            var workSheet = excelPackage.Workbook.Worksheets[(int)worksheetIndex];
 
-            var ws = excelPackage.Workbook.Worksheets[(int)worksheetIndex];
             // iterates through all rows, skipping the first one
             for (int nRow = 2;
-                nRow <= ws.Dimension.End.Row;
+                nRow <= workSheet.Dimension.End.Row;
                 nRow++)
             {
-                var row = ws.Cells[nRow, 1, nRow, ws.Dimension.End.Column];
+                var row = workSheet.Cells[nRow, 1, nRow, workSheet.Dimension.End.Column];
 
                 var name = row[nRow, 1].GetValue<string>();
                 var taxRateValue = row[nRow, 2].GetValue<string>();
@@ -85,22 +81,18 @@ namespace TaxRates.Controllers.Extensions
                 if (taxCategoryList.Where(c => c.Name == name).Count() != 0)
                     continue;
 
-                // create the TaxCategory entity and fill it with xlsx data
                 var taxCategory = new TaxCategory
                 {
-                    Name = name,
+                    Name = name.Trim(),
                     RateId = taxRateId
                 };
 
-                // add the new TaxCategory to the DB context
                 dbContext.TaxCategories.Add(taxCategory);
 
-                // increment the counter
                 TaxCategoryCount++;
-
             }
 
-            // save all the TaxCategory into the Database
+            // save all the TaxCategoryies into the Database
             if (TaxCategoryCount > 0)
                 await dbContext.SaveChangesAsync();
 
@@ -115,7 +107,10 @@ namespace TaxRates.Controllers.Extensions
         /// <param name="env"></param>
         /// <param name="worksheetIndex">Xlsx worksheet index ( counted from 0 ) where data are located.</param>
         /// <returns>Count of loaded Tax rates and categories</returns>
-        public static async Task<ActionResult> LoadTaxRatesAndCategoriesFromXlsx(this SeedController seedController, ApplicationDbContext dbContext, IWebHostEnvironment env, uint worksheetIndex = 0)
+        public static async Task<ActionResult> LoadTaxRatesAndCategoriesFromXlsx(this SeedController seedController,
+            ApplicationDbContext dbContext, 
+            IWebHostEnvironment env, 
+            uint worksheetIndex = 0)
 		{
             var path = Path.Combine(
             env.ContentRootPath,

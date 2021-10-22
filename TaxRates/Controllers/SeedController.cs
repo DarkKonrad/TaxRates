@@ -13,7 +13,7 @@ using TaxRates.Controllers.Extensions;
 
 namespace TaxRates.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/[controller]/[action]")]
 	[ApiController]
 	public class SeedController : ControllerBase
 	{
@@ -33,6 +33,5 @@ namespace TaxRates.Controllers
 		{
 			return await this.LoadTaxRatesAndCategoriesFromXlsx(_context, _env);
 		}
-
 	}
 }
