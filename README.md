@@ -40,6 +40,6 @@ If everything went well, output should be sent as example below:
 * **valueType** - calculated valueType: "gross" or "net"
 * **caclucaltedTaxValue** - computed result
 * **errorMessage** - If error is present errorMessage should be filled with... an error message rest of the values should be defaults ( "" or 0 ) 
- 
-**[GET] /api/VatCalculation/Categories** - Retrives list of avalible categories with VAT tax rates.
-**[GET] api/VatCalculation/Help**  - might be helpful to get to know with application. 
+ ##
+- **[GET] /api/VatCalculation/Categories** - Retrives list of avalible categories with VAT tax rates.
+- **[GET] api/VatCalculation/Help**  - might be helpful to get to know with application. 
