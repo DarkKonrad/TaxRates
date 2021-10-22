@@ -27,11 +27,11 @@ namespace VatRates.Data.DTO
 			// ToDo: "Prettify messge below"
 
 			Message = new StringBuilder()
-				.Append("POST URL: <Host>/api/VatCalculation/Calculate")
-				.AppendLine("With input json in body see example ")
-				.AppendLine("Provide Amount as decimal. Amount will be rounded to 2 places after comma ")
-				.AppendLine("Provide ValueType for calculated tax as string: \"gross\" (default) or \"net\"")
-				.AppendLine("GET URL: <Host>/api/VatCalculation/Categories?pageSize=10 ")
+				.Append(" POST URL: <Host>/api/VatCalculation/Calculate ")
+				.AppendLine(" With input json in body see example ")
+				.AppendLine(" Provide Amount as decimal. Amount will be rounded to 2 places after comma ")
+				.AppendLine(" Provide ValueType for calculated tax as string: \"gross\" (default) or \"net\"")
+				.AppendLine(" GET URL: <Host>/api/VatCalculation/Categories?pageSize=10 ")
 				.Append("returns avalible paginated categories with tax rates ")
 				.ToString();
 		}
