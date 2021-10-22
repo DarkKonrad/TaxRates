@@ -6,7 +6,8 @@ namespace VatRateCalculatorTests
 {
 	public class VateCalculatorTests
 	{
-		VatRateCalculator calculator;
+		private VatRateCalculator calculator;
+
 		[SetUp]
 		public void Setup()
 		{

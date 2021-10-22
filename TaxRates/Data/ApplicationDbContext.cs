@@ -6,12 +6,19 @@ namespace TaxRates.Data
 	public class ApplicationDbContext : DbContext
 	{
 		#region Constructor
-		public ApplicationDbContext() : base() { }
 
-		public ApplicationDbContext(DbContextOptions options) : base(options) { }
+		public ApplicationDbContext() : base()
+		{
+		}
+
+		public ApplicationDbContext(DbContextOptions options) : base(options)
+		{
+		}
+
 		#endregion Constructor
 
 		#region Methods
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
@@ -22,11 +29,14 @@ namespace TaxRates.Data
 			modelBuilder.Entity<TaxCategory>()
 				.ToTable("TaxCategories");
 		}
+
 		#endregion Methods
 
 		#region Properties
+
 		public DbSet<TaxRate> TaxRates { get; set; }
 		public DbSet<TaxCategory> TaxCategories { get; set; }
+
 		#endregion Properties
 	}
 }
